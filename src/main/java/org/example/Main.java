@@ -13,7 +13,7 @@ final class Main {
         LOGGER.info("Started program");
 
         try (OsbbCrud osbbCrud = new OsbbCrud()) {
-            osbbCrud.print();
+            osbbCrud.printConsoleOwnersWithnotEnteTheTerritory();
         }
     }
 }

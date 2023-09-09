@@ -4,14 +4,19 @@ import org.apache.log4j.Logger;
 import org.example.bd.ui.Owners;
 
 import java.io.Closeable;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
 public final class OsbbCrud implements Closeable {
     private static final Logger LOGGER = Logger.getLogger(OsbbCrud.class);
-
-    private Connection connection = null;
+    private static final String NAMES_COLUMS = "| Прізвище | Ім'я | По батькові | Моб.Телефон  | Електрона пошта  | Вулиця  | Будинок | Квартира | Площадь |"
+            + "\n"  +"|----------|------|-------------|--------------|------------------|---------|---------|----------|---------|" + "\n";
+    private Connection connection;
     private final Config config;
 
     public OsbbCrud() {
@@ -33,10 +38,37 @@ public final class OsbbCrud implements Closeable {
             LOGGER.fatal(e);
         }
     }
+    public void printConsoleOwnersWithnotEnteTheTerritory() {
+        try (this) {
+            System.out.print(NAMES_COLUMS);
+            for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
+                String result = "|   "
+                        + owners.getSurname()
+                        + "   | "
+                        + owners.getName()
+                        + " |     "
+                        + owners.getPatronymic()
+                        + "    |  "
+                        + owners.getPhoneNumber()
+                        + "  |  "
+                        + owners.getEmail()
+                        + "  | "
+                        + owners.getHouseAddress()
+                        + " |    "
+                        + owners.getHouseNumber()
+                        + "    |   "
+                        + owners.getApartmentNumber()
+                        + "    |   "
+                        + owners.getApartmentSquare()
+                        + "  |   ";
 
-    public List<Owners> getOwnersWithAutoNotAllowed() throws SQLException {
-        LOGGER.trace("Call getting Owners with auto not allowed method");
-
+                System.out.println(result);
+            }
+        } catch (SQLException e) {
+            LOGGER.fatal(e);
+        }
+    }
+    private List<Owners> getOwnersWithnotEnteTheTerritory() throws SQLException {
         String sqlOwnersWithAutoNotAllowedQuery = """
                 SELECT
                     MO.`surname` AS `Прізвище`,
@@ -84,39 +116,10 @@ public final class OsbbCrud implements Closeable {
         return result;
     }
 
-    public void print() {
-        try (this) {
-            for (Owners owners : getOwnersWithAutoNotAllowed()) {
-                String result = owners.getSurname()
-                        + " "
-                        + owners.getName()
-                        + " "
-                        + owners.getPatronymic()
-                        + " "
-                        + owners.getPhoneNumber()
-                        + " "
-                        + owners.getEmail()
-                        + " "
-                        + owners.getHouseAddress()
-                        + " "
-                        + owners.getHouseNumber()
-                        + " "
-                        + owners.getApartmentNumber()
-                        + " "
-                        + owners.getApartmentSquare();
-
-                System.out.println(result);
-            }
-        } catch (SQLException e) {
-            LOGGER.fatal(e);
-        }
-    }
-
     @Override
     public void close() {
         try {
             connection.close();
-            connection = null;
         } catch (SQLException e) {
             LOGGER.fatal(e);
         }
