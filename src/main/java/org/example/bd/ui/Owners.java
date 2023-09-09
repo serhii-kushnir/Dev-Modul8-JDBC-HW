@@ -1,11 +1,6 @@
 package org.example.bd.ui;
 
-import java.math.BigDecimal;
-
 public class Owners {
-
-
-    private int id;
     private String surname;
     private String name;
     private String patronymic;
@@ -14,17 +9,7 @@ public class Owners {
     private String houseAddress;
     private int houseNumber;
     private int apartmentNumber;
-    private float apartmentSqare;
-
-    public int getId() {
-        return id;
-    }
-
-    public Owners setId(final int id) {
-        this.id = id;
-        return this;
-    }
-
+    private float apartmentSquare;
     public String getSurname() {
         return surname;
     }
@@ -97,12 +82,12 @@ public class Owners {
         return this;
     }
 
-    public float getApartmentSqare() {
-        return apartmentSqare;
+    public float getApartmentSquare() {
+        return apartmentSquare;
     }
 
-    public Owners setApartmentSqare(final float apartmentSqare) {
-        this.apartmentSqare = apartmentSqare;
+    public Owners setApartmentSquare(final float apartmentSquare) {
+        this.apartmentSquare = apartmentSquare;
         return this;
     }
 }

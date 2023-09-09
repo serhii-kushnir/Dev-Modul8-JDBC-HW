@@ -10,10 +10,11 @@ final class Config {
     private static final String BD_USERNAME = "root";
     private static final String BD_PASSWORD = "root";
 
-    Config(){
+    Config() {
         this.flyway();
     }
-     private void flyway() {
+
+    private void flyway() {
         LOGGER.info("Started Flyway");
 
         Flyway.configure()
