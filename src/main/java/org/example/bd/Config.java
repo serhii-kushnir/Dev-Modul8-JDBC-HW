@@ -1,4 +1,4 @@
-package org.example;
+package org.example.bd;
 
 import org.apache.log4j.Logger;
 import org.flywaydb.core.Flyway;
@@ -10,7 +10,10 @@ final class Config {
     private static final String BD_USERNAME = "root";
     private static final String BD_PASSWORD = "root";
 
-    public void flyway() {
+    Config(){
+        this.flyway();
+    }
+     private void flyway() {
         LOGGER.info("\nStarted Flyway");
         Flyway.configure()
                 .dataSource(JDBC_URL, BD_USERNAME, BD_PASSWORD)
