@@ -7,11 +7,7 @@ import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,6 +37,7 @@ public final class OsbbCrud implements Closeable {
             LOGGER.fatal(e);
         }
     }
+
     public void printOwnersWithnotEnteTheTerritoryToConsole() {
         try (this) {
             System.out.print(NAMES_COLUMS);
@@ -72,7 +69,7 @@ public final class OsbbCrud implements Closeable {
         }
     }
 
-    public void printOwnersWithNotEnterTheTerritoryToFile(String filePath) throws SQLException {
+    public void printOwnersWithNotEnterTheTerritoryToFile(final String filePath) throws SQLException {
         try {
             connectionDatabases();
 

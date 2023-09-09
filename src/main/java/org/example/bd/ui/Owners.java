@@ -10,6 +10,7 @@ public class Owners {
     private int houseNumber;
     private int apartmentNumber;
     private float apartmentSquare;
+
     public String getSurname() {
         return surname;
     }

@@ -3,7 +3,6 @@ package org.example;
 import org.apache.log4j.Logger;
 import org.example.bd.OsbbCrud;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 final class Main {
@@ -19,7 +18,7 @@ final class Main {
             osbbCrud.printOwnersWithnotEnteTheTerritoryToConsole();
             osbbCrud.printOwnersWithNotEnterTheTerritoryToFile("OwnersWithNotEnterTheTerritory.txt");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOGGER.fatal(e);
         }
     }
 }
