@@ -14,7 +14,8 @@ final class Config {
         this.flyway();
     }
      private void flyway() {
-        LOGGER.info("\nStarted Flyway");
+        LOGGER.info("Started Flyway");
+
         Flyway.configure()
                 .dataSource(JDBC_URL, BD_USERNAME, BD_PASSWORD)
                 .locations("classpath:flyway")
@@ -22,6 +23,18 @@ final class Config {
                 .load()
                 .migrate();
 
-        LOGGER.info("\nFlyway: Ok");
+        LOGGER.info("Flyway installed: Ok");
+    }
+
+    String getJdbcUrl() {
+        return JDBC_URL;
+    }
+
+    String getBdUsername() {
+        return BD_USERNAME;
+    }
+
+    String getBdPassword() {
+        return BD_PASSWORD;
     }
 }
