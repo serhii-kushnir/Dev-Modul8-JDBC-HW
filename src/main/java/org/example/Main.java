@@ -2,11 +2,14 @@ package org.example;
 
 import org.apache.log4j.Logger;
 
-public class Main {
-    private static final Logger logger = Logger.getLogger(Main.class);
+final class Main {
+    private static final Logger LOGGER = Logger.getLogger(Main.class);
+    private static final Config CONFIG = new Config();
+    private Main() {
+    }
+    public static void main(final String[] args) {
+        LOGGER.info("\nStarted...");
 
-    public static void main(String[] args) {
-        logger.info("\nStarted...");
-
+        CONFIG.flyway();
     }
 }
