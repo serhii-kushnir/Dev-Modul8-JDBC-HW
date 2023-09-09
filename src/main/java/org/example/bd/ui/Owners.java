@@ -1,6 +1,11 @@
 package org.example.bd.ui;
 
+import java.math.BigDecimal;
+
 public class Owners {
+
+
+    private int id;
     private String surname;
     private String name;
     private String patronymic;
@@ -8,78 +13,96 @@ public class Owners {
     private String email;
     private String houseAddress;
     private int houseNumber;
-    private int apartmentsNumber;
-    private int sqareNumber;
+    private int apartmentNumber;
+    private float apartmentSqare;
+
+    public int getId() {
+        return id;
+    }
+
+    public Owners setId(final int id) {
+        this.id = id;
+        return this;
+    }
 
     public String getSurname() {
         return surname;
     }
 
-    public void setSurname(String surname) {
+    public Owners setSurname(final String surname) {
         this.surname = surname;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Owners setName(final String name) {
         this.name = name;
+        return this;
     }
 
     public String getPatronymic() {
         return patronymic;
     }
 
-    public void setPatronymic(String patronymic) {
+    public Owners setPatronymic(final String patronymic) {
         this.patronymic = patronymic;
+        return this;
     }
 
     public int getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public Owners setPhoneNumber(final int phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Owners setEmail(final String email) {
         this.email = email;
+        return this;
     }
 
     public String getHouseAddress() {
         return houseAddress;
     }
 
-    public void setHouseAddress(String houseAddress) {
+    public Owners setHouseAddress(final String houseAddress) {
         this.houseAddress = houseAddress;
+        return this;
     }
 
     public int getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public Owners setHouseNumber(final int houseNumber) {
         this.houseNumber = houseNumber;
+        return this;
     }
 
-    public int getApartmentsNumber() {
-        return apartmentsNumber;
+    public int getApartmentNumber() {
+        return apartmentNumber;
     }
 
-    public void setApartmentsNumber(int apartmentsNumber) {
-        this.apartmentsNumber = apartmentsNumber;
+    public Owners setApartmentNumber(final int apartmentNumber) {
+        this.apartmentNumber = apartmentNumber;
+        return this;
     }
 
-    public int getSqareNumber() {
-        return sqareNumber;
+    public float getApartmentSqare() {
+        return apartmentSqare;
     }
 
-    public void setSqareNumber(int sqareNumber) {
-        this.sqareNumber = sqareNumber;
+    public Owners setApartmentSqare(final float apartmentSqare) {
+        this.apartmentSqare = apartmentSqare;
+        return this;
     }
 }
