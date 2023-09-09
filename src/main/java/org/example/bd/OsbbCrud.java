@@ -3,7 +3,10 @@ package org.example.bd;
 import org.apache.log4j.Logger;
 import org.example.bd.ui.Owners;
 
+import java.io.BufferedWriter;
 import java.io.Closeable;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,7 +18,7 @@ import java.util.List;
 public final class OsbbCrud implements Closeable {
     private static final Logger LOGGER = Logger.getLogger(OsbbCrud.class);
     private static final String NAMES_COLUMS = "| Прізвище | Ім'я | По батькові | Моб.Телефон  | Електрона пошта  | Вулиця  | Будинок | Квартира | Площадь |"
-            + "\n"  +"|----------|------|-------------|--------------|------------------|---------|---------|----------|---------|" + "\n";
+            + "\n" + "|----------|------|-------------|--------------|------------------|---------|---------|----------|---------|" + "\n";
     private Connection connection;
     private final Config config;
 
@@ -38,7 +41,7 @@ public final class OsbbCrud implements Closeable {
             LOGGER.fatal(e);
         }
     }
-    public void printConsoleOwnersWithnotEnteTheTerritory() {
+    public void printOwnersWithnotEnteTheTerritoryToConsole() {
         try (this) {
             System.out.print(NAMES_COLUMS);
             for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
@@ -68,6 +71,46 @@ public final class OsbbCrud implements Closeable {
             LOGGER.fatal(e);
         }
     }
+
+    public void printOwnersWithNotEnterTheTerritoryToFile(String filePath) throws SQLException {
+        try {
+            connectionDatabases();
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(NAMES_COLUMS);
+
+                for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
+                    String result = "|   "
+                            + owners.getSurname()
+                            + "   | "
+                            + owners.getName()
+                            + " |     "
+                            + owners.getPatronymic()
+                            + "    |  "
+                            + owners.getPhoneNumber()
+                            + "  |  "
+                            + owners.getEmail()
+                            + "  | "
+                            + owners.getHouseAddress()
+                            + " |    "
+                            + owners.getHouseNumber()
+                            + "    |   "
+                            + owners.getApartmentNumber()
+                            + "    |   "
+                            + owners.getApartmentSquare()
+                            + "  |   ";
+
+                    writer.write(result);
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                LOGGER.fatal("Failed to write to file: " + e.getMessage());
+            }
+        } finally {
+            close();
+        }
+    }
+
     private List<Owners> getOwnersWithnotEnteTheTerritory() throws SQLException {
         String sqlOwnersWithAutoNotAllowedQuery = """
                 SELECT
