@@ -5,7 +5,6 @@ import org.flywaydb.core.Flyway;
 
 final class Config {
     private static final Logger LOGGER = Logger.getLogger(Config.class);
-
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/osbb";
     private static final String BD_USERNAME = "root";
     private static final String BD_PASSWORD = "root";
@@ -15,7 +14,7 @@ final class Config {
     }
 
     private void flyway() {
-        LOGGER.info("Started Flyway");
+        LOGGER.debug("Started Flyway");
 
         Flyway.configure()
                 .dataSource(JDBC_URL, BD_USERNAME, BD_PASSWORD)
@@ -24,7 +23,7 @@ final class Config {
                 .load()
                 .migrate();
 
-        LOGGER.info("Flyway installed: Ok");
+        LOGGER.debug("Flyway installed: Ok");
     }
 
     String getJdbcUrl() {

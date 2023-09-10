@@ -7,14 +7,22 @@ import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public final class OsbbCrud implements Closeable {
     private static final Logger LOGGER = Logger.getLogger(OsbbCrud.class);
-    private static final String NAMES_COLUMS = "| Прізвище | Ім'я | По батькові | Моб.Телефон  | Електрона пошта  | Вулиця  | Будинок | Квартира | Площадь |"
-            + "\n" + "|----------|------|-------------|--------------|------------------|---------|---------|----------|---------|" + "\n";
+    private static final String NAMES_COLUMNS = """
+    | Прізвище | Ім'я | По батькові | Моб.Телефон  | Електрона пошта  | Вулиця  | Будинок | Квартира | Площадь |
+    |----------|------|-------------|--------------|------------------|---------|---------|----------|---------|
+    """;
     private Connection connection;
     private final Config config;
 
@@ -25,14 +33,14 @@ public final class OsbbCrud implements Closeable {
 
     private void connectionDatabases() {
         try {
-            LOGGER.info("Started Connection databases");
+            LOGGER.trace("Started Connection databases");
 
             connection = DriverManager.getConnection(
                     config.getJdbcUrl(),
                     config.getBdUsername(),
                     config.getBdPassword());
 
-            LOGGER.info("Connection databases: Ok");
+            LOGGER.trace("Connection databases: Ok");
         } catch (SQLException e) {
             LOGGER.fatal(e);
         }
@@ -40,29 +48,10 @@ public final class OsbbCrud implements Closeable {
 
     public void printOwnersWithnotEnteTheTerritoryToConsole() {
         try (this) {
-            System.out.print(NAMES_COLUMS);
-            for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
-                String result = "|   "
-                        + owners.getSurname()
-                        + "   | "
-                        + owners.getName()
-                        + " |     "
-                        + owners.getPatronymic()
-                        + "    |  "
-                        + owners.getPhoneNumber()
-                        + "  |  "
-                        + owners.getEmail()
-                        + "  | "
-                        + owners.getHouseAddress()
-                        + " |    "
-                        + owners.getHouseNumber()
-                        + "    |   "
-                        + owners.getApartmentNumber()
-                        + "    |   "
-                        + owners.getApartmentSquare()
-                        + "  |   ";
+            System.out.print(NAMES_COLUMNS);
 
-                System.out.println(result);
+            for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
+                System.out.println(formatOwnersColunms(owners));
             }
         } catch (SQLException e) {
             LOGGER.fatal(e);
@@ -74,32 +63,14 @@ public final class OsbbCrud implements Closeable {
             connectionDatabases();
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write(NAMES_COLUMS);
+                writer.write(NAMES_COLUMNS);
 
                 for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
-                    String result = "|   "
-                            + owners.getSurname()
-                            + "   | "
-                            + owners.getName()
-                            + " |     "
-                            + owners.getPatronymic()
-                            + "    |  "
-                            + owners.getPhoneNumber()
-                            + "  |  "
-                            + owners.getEmail()
-                            + "  | "
-                            + owners.getHouseAddress()
-                            + " |    "
-                            + owners.getHouseNumber()
-                            + "    |   "
-                            + owners.getApartmentNumber()
-                            + "    |   "
-                            + owners.getApartmentSquare()
-                            + "  |   ";
-
-                    writer.write(result);
+                    writer.write(formatOwnersColunms(owners));
                     writer.newLine();
                 }
+
+                LOGGER.trace("The result is saved in the file: " + filePath);
             } catch (IOException e) {
                 LOGGER.fatal("Failed to write to file: " + e.getMessage());
             }
@@ -109,7 +80,7 @@ public final class OsbbCrud implements Closeable {
     }
 
     private List<Owners> getOwnersWithnotEnteTheTerritory() throws SQLException {
-        String sqlOwnersWithAutoNotAllowedQuery = """
+        String sql = """
                 SELECT
                     MO.`surname` AS `Прізвище`,
                     MO.`name` AS `Ім'я`,
@@ -135,7 +106,7 @@ public final class OsbbCrud implements Closeable {
                 ORDER BY MO.`id`""";
 
         final List<Owners> result = new LinkedList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlOwnersWithAutoNotAllowedQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -154,6 +125,28 @@ public final class OsbbCrud implements Closeable {
             }
         }
         return result;
+    }
+
+    private String formatOwnersColunms(final Owners owners) {
+        return "|   "
+                + owners.getSurname()
+                + "   | "
+                + owners.getName()
+                + " |     "
+                + owners.getPatronymic()
+                + "    |  "
+                + owners.getPhoneNumber()
+                + "  |  "
+                + owners.getEmail()
+                + "  | "
+                + owners.getHouseAddress()
+                + " |    "
+                + owners.getHouseNumber()
+                + "    |    "
+                + owners.getApartmentNumber()
+                + "   |   "
+                + owners.getApartmentSquare()
+                + "  |   ";
     }
 
     @Override
