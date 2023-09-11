@@ -15,8 +15,8 @@ final class Main {
         LOGGER.info("Started program");
 
         try (OsbbCrud osbbCrud = new OsbbCrud()) {
-            osbbCrud.printOwnersWithnotEnteTheTerritoryToConsole();
-            osbbCrud.printOwnersWithNotEnterTheTerritoryToFile("OwnersWithNotEnterTheTerritory.txt");
+            osbbCrud.printAllOwnersWithNotEnteTheTerritoryToConsole();
+            osbbCrud.printAllOwnersWithNotEnterTheTerritoryToFile("OwnersWithNotEnterTheTerritory.txt");
         } catch (SQLException e) {
             LOGGER.fatal(e);
         }

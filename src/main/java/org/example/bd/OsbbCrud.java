@@ -1,7 +1,6 @@
 package org.example.bd;
 
 import org.apache.log4j.Logger;
-import org.example.bd.ui.Owners;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -46,27 +45,27 @@ public final class OsbbCrud implements Closeable {
         }
     }
 
-    public void printOwnersWithnotEnteTheTerritoryToConsole() {
+    public void printAllOwnersWithNotEnteTheTerritoryToConsole() {
         try (this) {
             System.out.print(NAMES_COLUMNS);
 
-            for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
-                System.out.println(formatOwnersColunms(owners));
+            for (Owner owner : getOwnerWithNotEnteTheTerritory()) {
+                System.out.println(formatOwnersColunms(owner));
             }
         } catch (SQLException e) {
             LOGGER.fatal(e);
         }
     }
 
-    public void printOwnersWithNotEnterTheTerritoryToFile(final String filePath) throws SQLException {
+    public void printAllOwnersWithNotEnterTheTerritoryToFile(final String filePath) throws SQLException {
         try {
             connectionDatabases();
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write(NAMES_COLUMNS);
 
-                for (Owners owners : getOwnersWithnotEnteTheTerritory()) {
-                    writer.write(formatOwnersColunms(owners));
+                for (Owner owner : getOwnerWithNotEnteTheTerritory()) {
+                    writer.write(formatOwnersColunms(owner));
                     writer.newLine();
                 }
 
@@ -79,7 +78,7 @@ public final class OsbbCrud implements Closeable {
         }
     }
 
-    private List<Owners> getOwnersWithnotEnteTheTerritory() throws SQLException {
+    private List<Owner> getOwnerWithNotEnteTheTerritory() throws SQLException {
         String sql = """
                 SELECT
                     MO.`surname` AS `Прізвище`,
@@ -105,12 +104,12 @@ public final class OsbbCrud implements Closeable {
                 AND NOT R.`entry_rights_territory`
                 ORDER BY MO.`id`""";
 
-        final List<Owners> result = new LinkedList<>();
+        final List<Owner> owner = new LinkedList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             final ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                result.add(new Owners()
+                owner.add(new Owner()
                         .setPhoneNumber(resultSet.getInt("Телефон"))
                         .setHouseNumber(resultSet.getInt("Будинок"))
                         .setSurname(resultSet.getString("Прізвище"))
@@ -124,28 +123,28 @@ public final class OsbbCrud implements Closeable {
 
             }
         }
-        return result;
+        return owner;
     }
 
-    private String formatOwnersColunms(final Owners owners) {
+    private String formatOwnersColunms(final Owner owner) {
         return "|   "
-                + owners.getSurname()
+                + owner.getSurname()
                 + "   | "
-                + owners.getName()
+                + owner.getName()
                 + " |     "
-                + owners.getPatronymic()
+                + owner.getPatronymic()
                 + "    |  "
-                + owners.getPhoneNumber()
+                + owner.getPhoneNumber()
                 + "  |  "
-                + owners.getEmail()
+                + owner.getEmail()
                 + "  | "
-                + owners.getHouseAddress()
+                + owner.getHouseAddress()
                 + " |    "
-                + owners.getHouseNumber()
+                + owner.getHouseNumber()
                 + "    |    "
-                + owners.getApartmentNumber()
+                + owner.getApartmentNumber()
                 + "   |   "
-                + owners.getApartmentSquare()
+                + owner.getApartmentSquare()
                 + "  |   ";
     }
 

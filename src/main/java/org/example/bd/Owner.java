@@ -1,6 +1,6 @@
-package org.example.bd.ui;
+package org.example.bd;
 
-public class Owners {
+public class Owner {
     private String surname;
     private String name;
     private String patronymic;
@@ -15,7 +15,7 @@ public class Owners {
         return surname;
     }
 
-    public Owners setSurname(final String surname) {
+    public Owner setSurname(final String surname) {
         this.surname = surname;
         return this;
     }
@@ -24,7 +24,7 @@ public class Owners {
         return name;
     }
 
-    public Owners setName(final String name) {
+    public Owner setName(final String name) {
         this.name = name;
         return this;
     }
@@ -33,7 +33,7 @@ public class Owners {
         return patronymic;
     }
 
-    public Owners setPatronymic(final String patronymic) {
+    public Owner setPatronymic(final String patronymic) {
         this.patronymic = patronymic;
         return this;
     }
@@ -42,7 +42,7 @@ public class Owners {
         return phoneNumber;
     }
 
-    public Owners setPhoneNumber(final int phoneNumber) {
+    public Owner setPhoneNumber(final int phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -51,7 +51,7 @@ public class Owners {
         return email;
     }
 
-    public Owners setEmail(final String email) {
+    public Owner setEmail(final String email) {
         this.email = email;
         return this;
     }
@@ -60,7 +60,7 @@ public class Owners {
         return houseAddress;
     }
 
-    public Owners setHouseAddress(final String houseAddress) {
+    public Owner setHouseAddress(final String houseAddress) {
         this.houseAddress = houseAddress;
         return this;
     }
@@ -69,7 +69,7 @@ public class Owners {
         return houseNumber;
     }
 
-    public Owners setHouseNumber(final int houseNumber) {
+    public Owner setHouseNumber(final int houseNumber) {
         this.houseNumber = houseNumber;
         return this;
     }
@@ -78,7 +78,7 @@ public class Owners {
         return apartmentNumber;
     }
 
-    public Owners setApartmentNumber(final int apartmentNumber) {
+    public Owner setApartmentNumber(final int apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
         return this;
     }
@@ -87,7 +87,7 @@ public class Owners {
         return apartmentSquare;
     }
 
-    public Owners setApartmentSquare(final float apartmentSquare) {
+    public Owner setApartmentSquare(final float apartmentSquare) {
         this.apartmentSquare = apartmentSquare;
         return this;
     }
